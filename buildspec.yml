@@ -1,5 +1,4 @@
 version: 0.1
-
 phases:
   install:
     commands:
@@ -8,7 +7,7 @@ phases:
       - zip -r authorizer.zip ./authorizer
       - ls l
       - aws s3 cp ./ s3://cicdtestforsam/lambda/ --recursive  
-   build:
+  build:
     commands:
       - aws cloudformation package --template-file template.yaml --s3-bucket cicdtestforsam  --output-template-file packaged-template.yaml
       - aws cloudformation deploy --stack-name announcement --capabilities CAPABILITY_IAM --template-file packaged-templat.yml --role-arn arn:aws:iam::774142313059:role/CloudFormationServiceRole
