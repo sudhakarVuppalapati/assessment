@@ -14,7 +14,7 @@ phases:
       - aws cloudformation package --template-file template.yaml --s3-bucket testsamcicd  --output-template-file packaged-template.yaml 
       - aws cloudformation deploy --stack-name announcement --capabilities CAPABILITY_IAM --template-file packaged-template.yaml --parameter-overrides "Stage=test"
 artifacts:
-  base-directory: app
+  base-directory: assessment
   files:
     - '**/*'
   type: zip
