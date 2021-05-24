@@ -1,0 +1,135 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: 'Announcement
+
+  Sample SAM Template for Announcement
+
+  '
+Globals:
+  Function:
+    Timeout: 3
+Parameters:
+  Stage:
+    Type: String
+Resources:
+  AnnouncementsTopic:
+    Type: AWS::SNS::Topic
+    Properties:
+      DisplayName: AnnouncementsTopic
+      TopicName: AnnouncementsTopic
+  EmailSubscription:
+    Type: AWS::SNS::Subscription
+    Properties:
+      Endpoint: sudhavuppalapati@gmail.com
+      Protocol: email
+      TopicArn:
+        Ref: AnnouncementsTopic
+  AnnouncementsTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: Announcements
+      AttributeDefinitions:
+      - AttributeName: title
+        AttributeType: S
+      KeySchema:
+      - AttributeName: title
+        KeyType: HASH
+      ProvisionedThroughput:
+        ReadCapacityUnits: 5
+        WriteCapacityUnits: 5
+  HelloWorldFunction1:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: s3://testmindtreelambda/724b439b2df5c16320741eaa2665142f
+      Handler: app.app1
+      Runtime: python3.7
+      Policies:
+      - DynamoDBCrudPolicy:
+          TableName:
+            Ref: AnnouncementsTable
+      - SNSPublishMessagePolicy:
+          TopicName: AnnouncementsTopic
+      - SSMParameterReadPolicy:
+          ParameterName:
+            Ref: TableName
+      - SSMParameterReadPolicy:
+          ParameterName:
+            Ref: TopicArn
+      Events:
+        PostAnnouncements:
+          Type: Api
+          Properties:
+            RestApiId:
+              Ref: MyApi
+            Path: /announcements
+            Method: post
+        ListAnnouncements:
+          Type: Api
+          Properties:
+            RestApiId:
+              Ref: MyApi
+            Path: /announcements
+            Method: get
+  MyApi:
+    Type: AWS::Serverless::Api
+    Properties:
+      StageName:
+        Ref: Stage
+      CacheClusterEnabled: true
+      CacheClusterSize: '0.5'
+      MethodSettings:
+      - CachingEnabled: false
+        CacheTtlInSeconds: 0
+        HttpMethod: '*'
+        ResourcePath: /*
+      Auth:
+        DefaultAuthorizer: MyLambdaRequestAuthorizer
+        Authorizers:
+          MyLambdaRequestAuthorizer:
+            FunctionPayloadType: REQUEST
+            FunctionArn:
+              Fn::GetAtt:
+              - MyAuthFunction
+              - Arn
+            Identity:
+              QueryStrings:
+              - auth
+              Headers:
+              - approval
+  MyAuthFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: s3://testmindtreelambda/ccc90d4f27474d6f85b786fae2b0243a
+      Handler: handler.authorizer
+      Runtime: nodejs10.x
+  TableName:
+    Type: AWS::SSM::Parameter
+    Properties:
+      Name: TableName
+      Type: String
+      Value:
+        Ref: AnnouncementsTable
+  TopicArn:
+    Type: AWS::SSM::Parameter
+    Properties:
+      Name: TopicArn
+      Type: String
+      Value:
+        Ref: AnnouncementsTopic
+Outputs:
+  HelloWorldApi:
+    Description: API Gateway endpoint URL for Prod stage for Hello World function
+    Value:
+      Fn::Sub: https://${MyApi}.execute-api.${AWS::Region}.amazonaws.com/${Stage}/hello/
+  HelloWorldFunction1:
+    Description: Hello World Lambda Function ARN
+    Value:
+      Fn::GetAtt:
+      - HelloWorldFunction1
+      - Arn
+  HelloWorldFunction1IamRole:
+    Description: Implicit IAM Role created for Hello World function
+    Value:
+      Fn::GetAtt:
+      - HelloWorldFunction1Role
+      - Arn

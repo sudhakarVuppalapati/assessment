@@ -1,0 +1,60 @@
+{
+	"id": "7ae5bf86-378f-a708-1382-179d553c5815",
+	"name": "get",
+	"description": "",
+	"order": [
+		"8ce63fcc-1201-b52d-246e-bef44d639824"
+	],
+	"folders": [],
+	"folders_order": [],
+	"timestamp": 1612626926139,
+	"owner": "367981",
+	"public": false,
+	"requests": [
+		{
+			"id": "8ce63fcc-1201-b52d-246e-bef44d639824",
+			"headers": "Content-Type: application/json\napproval: approve\n",
+			"headerData": [
+				{
+					"key": "Content-Type",
+					"value": "application/json",
+					"description": "",
+					"enabled": true
+				},
+				{
+					"key": "approval",
+					"value": "approve",
+					"description": "",
+					"enabled": true
+				}
+			],
+			"url": "https://ohyjknht45.execute-api.us-west-1.amazonaws.com/dev/listannouncements?auth=yes",
+			"queryParams": [
+				{
+					"key": "auth",
+					"value": "yes",
+					"equals": true,
+					"description": "",
+					"enabled": true
+				}
+			],
+			"pathVariables": {},
+			"pathVariableData": [],
+			"preRequestScript": null,
+			"method": "GET",
+			"collectionId": "7ae5bf86-378f-a708-1382-179d553c5815",
+			"data": [],
+			"dataMode": "raw",
+			"name": "https://ohyjknht45.execute-api.us-west-1.amazonaws.com/dev/listannouncements?auth=yes",
+			"description": "",
+			"descriptionFormat": "html",
+			"time": 1612626928928,
+			"version": 2,
+			"responses": [],
+			"tests": null,
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"rawModeData": "{\"description\": \"descriptiondetailswww\", \"date\": \"30-jan-2021\", \"title\": \"titleNamenew5\"}"
+		}
+	]
+}
