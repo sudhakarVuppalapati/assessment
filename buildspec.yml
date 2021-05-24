@@ -4,7 +4,7 @@ phases:
   install:
     commands:
       - pip install --upgrade pip
-      - pip install -r requirements.txt -t hello_world/
+      - pip install -r ./hello_world/requirements.txt -t hello_world/
       - zip -r hello_world.zip ./hello_world
       - zip -r authorizer.zip ./authorizer
       - ls -l
