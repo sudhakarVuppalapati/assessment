@@ -3,7 +3,7 @@ version: 0.1
 phases:
   install:
     commands:
-      - pip install -r requirements.txt -t app
+      - pip install --upgrade pip
       - zip -r hello_world.zip ./hello_world
       - zip -r authorizer.zip ./authorizer
       - ls l
