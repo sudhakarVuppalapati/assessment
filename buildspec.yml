@@ -7,10 +7,10 @@ phases:
       - zip -r hello_world.zip ./hello_world
       - zip -r authorizer.zip ./authorizer
       - ls -l
-      - aws s3 cp ./ s3://cicdtestforsam/lambda/ --recursive  
+      - aws s3 cp ./ s3://testsamcicd/lambda/ --recursive  
   build:
     commands:
-      - aws cloudformation package --template-file template.yaml --s3-bucket cicdtestforsam  --output-template-file packaged-template.yaml 
+      - aws cloudformation package --template-file template.yaml --s3-bucket testsamcicd  --output-template-file packaged-template.yaml 
       - aws cloudformation deploy --stack-name announcement --capabilities CAPABILITY_IAM --template-file packaged-template.yaml --parameter-overrides "Stage=test"
 artifacts:
   base-directory: app
