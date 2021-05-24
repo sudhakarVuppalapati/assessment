@@ -7,7 +7,7 @@ phases:
       - zip -r hello_world.zip ./hello_world
       - zip -r authorizer.zip ./authorizer
       - ls l
-      - aws s3 cp ./ s3://testmindtreelambda/lambda/ --recursive  
+      - aws s3 cp ./ s3://cicdtestforsam/lambda/ --recursive  
    build:
     commands:
       - aws cloudformation package --template-file template.yaml --s3-bucket cicdtestforsam  --output-template-file packaged-template.yaml
