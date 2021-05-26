@@ -1,0 +1,128 @@
+---
+swagger: "2.0"
+info:
+  version: "1.0"
+  title: "test3"
+host: "hka11n4a8l.execute-api.us-west-1.amazonaws.com"
+basePath: "/first"
+schemes:
+- "https"
+paths:
+  /announcements:
+    get:
+      produces:
+      - "application/json"
+      parameters:
+      - name: "auth"
+        in: "query"
+        required: false
+        type: "string"
+      - name: "ExclusiveStartKey"
+        in: "header"
+        required: false
+        type: "string"
+      - name: "approval"
+        in: "header"
+        required: true
+        type: "string"
+      responses:
+        "200":
+          description: "200 response"
+          schema:
+            $ref: "#/definitions/response"
+        "400":
+          description: "400 response"
+          schema:
+            $ref: "#/definitions/getResponceError"
+        "403":
+          description: "403 response"
+          schema:
+            $ref: "#/definitions/getResponceError"
+      security:
+      - MyLambdaRequestAuthorizer: []
+    post:
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "auth"
+        in: "query"
+        required: true
+        type: "string"
+      - name: "approval"
+        in: "header"
+        required: true
+        type: "string"
+      - in: "body"
+        name: "announcements"
+        required: true
+        schema:
+          $ref: "#/definitions/announcements"
+      responses:
+        "201":
+          description: "201 response"
+          schema:
+            $ref: "#/definitions/postResponse"
+        "400":
+          description: "400 response"
+          schema:
+            $ref: "#/definitions/postResponse"
+        "500":
+          description: "500 response"
+          schema:
+            $ref: "#/definitions/postResponse"
+        "403":
+          description: "403 response"
+          schema:
+            $ref: "#/definitions/postResponse"
+      security:
+      - MyLambdaRequestAuthorizer: []
+securityDefinitions:
+  MyLambdaRequestAuthorizer:
+    type: "apiKey"
+    name: "Unused"
+    in: "header"
+    x-amazon-apigateway-authtype: "custom"
+definitions:
+  postResponse:
+    type: "object"
+    properties:
+      message:
+        type: "string"
+        description: "description of the message"
+  response:
+    properties:
+      title:
+        type: "string"
+    type: "array"
+    items:
+      type: "object"
+      properties:
+        description:
+          type: "string"
+          minLength: 5
+        title:
+          type: "string"
+          minLength: 3
+        date:
+          type: "string"
+          format: "date"
+  announcements:
+    type: "object"
+    properties:
+      description:
+        type: "string"
+        minLength: 5
+      title:
+        type: "string"
+        minLength: 3
+      date:
+        type: "string"
+        format: "date"
+  getResponceError:
+    type: "object"
+    properties:
+      message:
+        type: "string"
+        description: "description of the message"
